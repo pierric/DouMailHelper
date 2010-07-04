@@ -3,28 +3,24 @@
 
 #include <stdbool.h>
 #include <libdou_global.h>
+#include "service.h"
 
-struct context;
-typedef struct context *pcontext;
-
-enum error_no
-{
-    NoError,
-    Uninitialized,
-    Unauthorized,
-    NetworkFailure,
-};
-
-LIBDOUSHARED_EXPORT pcontext initialize(const char* consumer_key, const char* consumer_secret);
-
-LIBDOUSHARED_EXPORT char* get_authorize_uri(pcontext, char*);
-
-LIBDOUSHARED_EXPORT bool authorize(pcontext);
+LIBDOUSHARED_EXPORT char* get_unread(pcontext, int start, int number);
 
 LIBDOUSHARED_EXPORT char* get_inbox(pcontext, int start, int number);
 
-LIBDOUSHARED_EXPORT char* get_unread(pcontext, int number);
+LIBDOUSHARED_EXPORT char* get_outbox(pcontext, int start, int number);
 
-LIBDOUSHARED_EXPORT enum error_no last_error(void);
+LIBDOUSHARED_EXPORT char* get_mail(pcontext, int id);
+
+LIBDOUSHARED_EXPORT bool put_mail(pcontext, const char *text, const char* captcha);
+
+LIBDOUSHARED_EXPORT bool mark_read(pcontext, int id);
+
+LIBDOUSHARED_EXPORT bool delete_mail(pcontext, int id);
+
+LIBDOUSHARED_EXPORT bool mark_read_g(pcontext, int *ids, int number);
+
+LIBDOUSHARED_EXPORT bool delete_mail_g(pcontext, int *ids, int number);
 
 #endif // MAIL_H
