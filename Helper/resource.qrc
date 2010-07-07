@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/inbox.css</file>
+        <file>resource/template.html</file>
+    </qresource>
+</RCC>
