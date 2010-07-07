@@ -3,5 +3,6 @@
 
 #include "service.h"
 #include "mail.h"
+#include "users.h"
 
 #endif // LIBDOU_H

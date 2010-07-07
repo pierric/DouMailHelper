@@ -32,7 +32,6 @@ pcontext initialize(const char *consumer_key, const char *consumer_secret)
         reply = oauth_http_get(req_url, NULL);
         if(reply)
         {
-            fprintf(stderr, "parse reply:%s\n", reply);
             char *req_key, *req_sec;
             if (parse_reply(reply, &req_key, &req_sec, NULL))
             {
@@ -43,6 +42,7 @@ pcontext initialize(const char *consumer_key, const char *consumer_secret)
                 c->consumer_secret = strdup(consumer_secret);
                 c->request_key = req_key;
                 c->request_secret = req_sec;
+                c->access_key = c->access_secret = NULL;
                 return c;
             }
             free(reply);
@@ -51,6 +51,32 @@ pcontext initialize(const char *consumer_key, const char *consumer_secret)
     }
     error = Uninitialized;
     return NULL;
+}
+
+pcontext initialize2(const char *consumer_key, const char *consumer_secret,
+                     const char *access_key, const char *access_secret,
+                     int uid)
+{
+    pcontext c = (struct context *)malloc(sizeof(struct context));
+    c->consumer_key = strdup(consumer_key);
+    c->consumer_secret = strdup(consumer_secret);
+    c->request_key = c->request_secret = NULL;
+    c->access_key = strdup(access_key);
+    c->access_secret = strdup(access_secret);
+    c->user_id = uid;
+    return c;
+}
+
+void cleanup(pcontext c)
+{
+    if(!c) return;
+    if(c->consumer_key)    free(c->consumer_key);
+    if(c->consumer_secret) free(c->consumer_secret);
+    if(c->request_key)     free(c->request_key);
+    if(c->request_secret)  free(c->request_secret);
+    if(c->access_key)      free(c->access_key);
+    if(c->access_secret)   free(c->access_secret);
+    free(c);
 }
 
 char* get_authorize_uri(pcontext c, char* uri)
@@ -62,6 +88,16 @@ char* get_authorize_uri(pcontext c, char* uri)
     }
     sprintf(uri, "http://www.douban.com/service/auth/authorize?oauth_token=%s", c->request_key);
     return uri;
+}
+
+const char* get_access_key(pcontext c)
+{
+    return c->access_key;
+}
+
+const char* get_access_secret(pcontext c)
+{
+    return c->access_secret;
 }
 
 bool authorize(pcontext c)

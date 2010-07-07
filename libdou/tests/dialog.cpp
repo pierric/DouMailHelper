@@ -51,9 +51,12 @@ void Dialog::authorizeGetAccessToken()
 }
 void Dialog::getMails()
 {
-    char* mails = get_inbox(dou_context, 0, 10);
+    int uid = get_user_id(dou_context);
+    qDebug() << uid;
+    char* mails = get_inbox(dou_context, 1, 10);
     if(mails)
     {
+        qDebug() << "got it";
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
         ui->xml->setPlainText(codec->toUnicode(mails));
         free(mails);

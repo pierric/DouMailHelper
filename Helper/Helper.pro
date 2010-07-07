@@ -5,11 +5,16 @@ QT += xml
 TARGET = dou
 TEMPLATE = app
 FORMS += mainwindow.ui
-HEADERS += helpermainwindow.h
+HEADERS += helpermainwindow.h \
+    objects.h \
+    persistence.h
 SOURCES += helpermainwindow.cpp \
-    main.cpp
+    main.cpp \
+    persistence.cpp \
+    objects.cpp
 INCLUDEPATH += ../libdou/include
 debug:LIBS += -ldou \
     -L../libdou/debug
 release:LIBS += -ldou \
     -L../libdou/release
+RESOURCES += resource.qrc
