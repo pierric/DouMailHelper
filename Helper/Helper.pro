@@ -13,8 +13,11 @@ SOURCES += helpermainwindow.cpp \
     persistence.cpp \
     objects.cpp
 INCLUDEPATH += ../libdou/include
-debug:LIBS += -ldou \
-    -L../libdou/debug
-release:LIBS += -ldou \
-    -L../libdou/release
+win32{
+    debug:LIBS += -ldou -L../libdou/debug
+    release:LIBS += -ldou -L../libdou/release
+}
+unix{
+    LIBS += -ldou -L../libdou
+}
 RESOURCES += resource.qrc
